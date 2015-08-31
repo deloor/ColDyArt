@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <h1> DYNAMIC ART TEST </h1>
+  <h2> 28 </h2>
+</head>
+<body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+  <p><input type="button" value="Embêter le serveur" onClick="embeterServeur()"/></p>
+  <!-- <p><input type="button" value="Init" onclick="init()" /></p> -->
+  <div id="tempValue">
+    Temporal values :
+  </div>
+  <canvas id="canvas" width="1000" height="1000">
+    <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
+  </canvas>
+
+  <script>
+  var myArray = [];
+  console.log("test de la console");
+  if (window.DeviceMotionEvent == undefined) {
+        //No accelerometer is present. Use buttons.
+        alert("no accelerometer");
+    }
+    else {
+        alert("accelerometer found");
+        window.addEventListener("devicemotion", accelerometerUpdate, true);
+    }
+  alert("ready ?");
+  var socket = io.connect('http://192.168.215.90:8080');
+  var pseudo = prompt('Quel est votre pseudo ?');
+  socket.emit('new_user', pseudo);
+  socket.on('message', function(message) { alert('Le serveur a un message pour vous : ' + message)});
+
+
+  function embeterServeur() {
+                socket.emit('message', 'Salut serveur, ça va ?');
+            }
+
+  // for (i=0;i<10;i++){
+  // myArray.push(Math.floor(Math.random()*200) +1);
+  // console.log(myArray[i]);}
+
+
+  function accelerometerUpdate(e) {
+
+     var aX = event.accelerationIncludingGravity.x*1;
+     var aY = event.accelerationIncludingGravity.y*1;
+     var aZ = event.accelerationIncludingGravity.z*1;
+     socket.emit('accelerometre', 'Reception de accelerometre : '+aX+'_'+aY+'_'+aZ);
+      socket.emit('aX', aX);
+      socket.emit('aY', aY);
+      socket.emit('aZ', aZ);
+     //The following two lines are just to calculate a
+     // tilt. Not really needed.
+     xPosition = Math.atan2(aY, aZ);
+     yPosition = Math.atan2(aX, aZ);
+     console.log("acceleration aX : " + aX);
+     console.log("acceleration aY : " + aY);
+     console.log("acceleration aZ : " + aZ);
+
+     //s = document.getElementById('tempValue').innerHTML;
+     //s+= x;
+
+     var canvas  = document.querySelector('#canvas');
+     var context = canvas.getContext('2d');
+     //context.fillStyle = "gold";
+     var r = Math.floor(200*(aX+10)/20);
+     var g = Math.floor(200*(aY+10)/20);
+     var b = Math.floor(200*(aZ+10)/20);
+     var alpha = ((aX+10)/20)
+
+     s = "Accelerometer config rgba(" + r + ",\n" + g + ",\n" + b + ",\n" + alpha + ")";
+     document.getElementById('tempValue').innerHTML = s ;
+     context.fillStyle="rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+     context.fillRect(2*r,2*b,2*r,g);
+  }
+  </script>
+</body>
+</html>

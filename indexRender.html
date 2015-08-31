@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title> DYNAMIC ART RENDERING TEST </title>
+  <style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+</head>
+<body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="http://192.168.40.135:8081/socket.io/socket.io.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="http://mrdoob.github.com/three.js/build/three.min.js"></script>
+  <!-- <script src="js/three.min.js"></script> -->
+  <script>
+  var aX=0;
+
+   alert("ready ?");
+   var socket = io.connect('http://192.168.40.135:8081');
+   socket.on('message', function(message) { console.log('Le serveur a un message pour vous : ' + message)});
+   socket.on('accelerometer', function(message) { console.log('Accelerometre : ' + message)});
+   socket.on('aX', function(message) { console.log('reception de aX : ' + message); aX = Number(message)*0.01});
+   socket.on('aY', function(message) { console.log('reception de aY : ' + message); aY = Number(message)*0.01});
+   socket.on('aZ', function(message) { console.log('reception de aZ : ' + message); aZ = Number(message)*0.01});
+   var pseudo = prompt('Quel est votre pseudo ?');
+
+
+
+   var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+   //
+    var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, wireframe: true, wireframeLinewidth: 10 } );
+    var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+   var cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+
+   camera.position.z = 5;
+    function render() {
+      requestAnimationFrame( render );
+       renderer.render( scene, camera );
+       cube.rotation.x += aX;
+       cube.rotation.y += aY;
+       cube.rotation.z += aZ;
+       //var color = new THREE.Color(aX/10,1,0);
+       //cube.material.color.setHex(Math.random() * 0xffffff);
+       var red = aX*10;
+       if (red < 0) {
+         red = -red;
+       };
+       if (red > 1) {
+         red = 1;
+       };
+       var green = aY*10;
+       if (green < 0) {
+         green = -green;
+       };
+       if (green > 1) {
+         green = 1;
+       };
+       var blue = aZ*10;
+       if (blue < 0) {
+         blue = -blue;
+       };
+       if (blue > 1) {
+         blue = 1;
+       };
+
+       cube.material.color.setRGB(red,green,blue);
+       //cube.material.color.setRGB(aX/10,1,0);
+       //console.log('aX : ' + aX);
+       console.log('red : ' + red);
+      }
+ //
+  render();
+ console.log('ici');
+
+
+   </script>
+
+</body>
+</html>

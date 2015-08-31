@@ -1,6 +1,0 @@
-Ask Pierre De Loor to start the server of collaborative dynamic art and to give you the IP adress of this server.
-Connect the web browser of your cellphone (in WIFI mode) at the WIFI IP of the server with port 8080 (for instance 192.168.215.90:8080).
-It become a controler of the collaborative dynamic Art
-Connect a recent web-browser (chrome, firefox ...) on http://www.enib.fr/~deloor/ColDyArt/threejsPart/indexRender.html
-It become a renderer of the collaborative dynamic Art
-You can control the rendering of the renderer with your cellular.

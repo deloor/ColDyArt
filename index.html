@@ -9,7 +9,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-  <p><input type="button" value="Embêter le serveur" onClick="embeterServeur()"/></p>
+  <p><input type="button" value="Embeter Serveur" onClick="embeterServeur()"/></p>
+  <p><input type="button" value="Simuler accelerometre" onClick="simuAccelerometre()"/></p>
   <!-- <p><input type="button" value="Init" onclick="init()" /></p> -->
   <div id="tempValue">
     Temporal values :
@@ -19,6 +20,7 @@
   </canvas>
 
   <script>
+  var IPSERVEUR = '192.168.0.23'
   var myArray = [];
   console.log("test de la console");
   if (window.DeviceMotionEvent == undefined) {
@@ -30,7 +32,7 @@
         window.addEventListener("devicemotion", accelerometerUpdate, true);
     }
   alert("ready ?");
-  var socket = io.connect('http://192.168.215.90:8080');
+  var socket = io.connect('http://'+IPSERVEUR+':8080');
   var pseudo = prompt('Quel est votre pseudo ?');
   socket.emit('new_user', pseudo);
   socket.on('message', function(message) { alert('Le serveur a un message pour vous : ' + message)});
@@ -40,6 +42,38 @@
                 socket.emit('message', 'Salut serveur, ça va ?');
             }
 
+
+ function simuAccelerometre(){
+   var aX = Math.random()*10;
+   var aY = Math.random()*10;
+   var aZ = Math.random()*10;
+    socket.emit('accelerometre', 'Reception de accelerometre : '+aX+'_'+aY+'_'+aZ);
+    socket.emit('aX', aX);
+    socket.emit('aY', aY);
+    socket.emit('aZ', aZ);
+
+    xPosition = Math.atan2(aY, aZ);
+    yPosition = Math.atan2(aX, aZ);
+    console.log("acceleration aX : " + aX);
+    console.log("acceleration aY : " + aY);
+    console.log("acceleration aZ : " + aZ);
+
+    //s = document.getElementById('tempValue').innerHTML;
+    //s+= x;
+
+    var canvas  = document.querySelector('#canvas');
+    var context = canvas.getContext('2d');
+    //context.fillStyle = "gold";
+    var r = Math.floor(200*(aX+10)/20);
+    var g = Math.floor(200*(aY+10)/20);
+    var b = Math.floor(200*(aZ+10)/20);
+    var alpha = ((aX+10)/20)
+
+    s = "Accelerometer config rgba(" + r + ",\n" + g + ",\n" + b + ",\n" + alpha + ")";
+    document.getElementById('tempValue').innerHTML = s ;
+    context.fillStyle="rgba(" + r + "," + g + "," + b + "," + alpha + ")";
+    context.fillRect(2*r,2*b,2*r,g);
+ }
   // for (i=0;i<10;i++){
   // myArray.push(Math.floor(Math.random()*200) +1);
   // console.log(myArray[i]);}
@@ -54,8 +88,8 @@
       socket.emit('aX', aX);
       socket.emit('aY', aY);
       socket.emit('aZ', aZ);
-     //The following two lines are just to calculate a
-     // tilt. Not really needed.
+
+    // Afficher sur le téléphone
      xPosition = Math.atan2(aY, aZ);
      yPosition = Math.atan2(aX, aZ);
      console.log("acceleration aX : " + aX);

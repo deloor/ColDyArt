@@ -2,7 +2,9 @@ var http = require('http');
 var fs = require('fs');
 var os = require('os');
 var ifaces = os.networkInterfaces();
+io = require('socket.io');
 
+var IPWIFISERVEUR;
 
 // Recherche de l'IP locale
 Object.keys(ifaces).forEach(function (ifname) {
@@ -21,90 +23,116 @@ Object.keys(ifaces).forEach(function (ifname) {
     } else {
       // this interface has only one ipv4 adress
       console.log(ifname, iface.address);
+      if(ifname.search('sans fil')>0){
+        IPWIFISERVEUR = iface.address;
+        console.log("Vérifiez IP serveur wifi dans les index.html et indexRender.html : " + IPWIFISERVEUR);
+        }
+
     }
   });
 });
 
 
-// Chargement du fichier index.html que va lire le client
-
-// var server = http.createServer(function(req, res) {
-//     fs.readFile('./index.html', 'utf-8', function(error, content) {
-//         res.writeHead(200, {"Content-Type": "text/html"});
-//         res.end(content);
-//     });
-// });
-
-var server = http.createServer(onRequest_a);
-function onRequest_a(req, res){
-  fs.readFile('./index.html', 'utf-8', function(error, content) {res.writeHead(200, {"Content-Type": "text/html"}); res.end(content);});
-};
-
-
-var renderServer =  http.createServer(onRequest_render);
-
-function onRequest_render(request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end("Hello World\n");
-};
+var renderClients = [] // liste des clients de type renderer
 
 
 console.log('Demarrage des serveurs');
+var server = http.createServer(onRequest_Interaction);
+console.log('Serveur interaction OK');
+function onRequest_Interaction(req, res){
+  // On demande au client de charger le fichier index.html et de l'exécuter
+  //res.write(IPSERVEUR);
+  fs.readFile('./index.html', 'utf-8', function(error, content) {res.writeHead(200, {"Content-Type": "text/html"});
+  res.end(content);});
+  console.log("Requete Connection d'un Client de type Interaction");
+};
+
+
+var renderServer =  http.createServer(onRequest_Renderer);
+console.log('Serveur rendu : OK');
+
+function onRequest_Renderer(request, response) {
+  // On demande au client de charger le fichier index.html et de l'exécuter
+  fs.readFile('./indexRender.html', 'utf-8', function(error, content) {response.writeHead(200, {"Content-Type": "text/html"});
+  response.end(content);});
+  // Exemple plus simple : on répond une chaine de caractère "Hello Word"
+  //response.writeHead(200, {"Content-Type": "text/plain"});
+  //response.end("Hello World\n");
+  console.log("Requete Connection d'un Client de type Renderer");
+};
+
+
+
 // Serveur pour les renderer
 renderServer.listen(8081);
+console.log('Port 8081 pour rendu : OK');
 // Part des clients qui contrôlent
 server.listen(8080);
+console.log('Port 8080 pour interaction : OK');
 
 // Chargement de socket.io et démarrage du serveur
+var socketI = io.listen(server);
+console.log('Socket interaction : OK');
 
-var io = require('socket.io').listen(server);
-var ioRender = require('socket.io').listen(renderServer);
-
+var socketR = io.listen(renderServer);
+console.log('Socket rendu: OK');
 // Quand on client se connecte, on le note dans la console
 
-io.sockets.on('connection', function (socket) {
-    console.log('Un client est connecté !');
-    socket.emit('message', 'Vous êtes bien connecté !');
+socketI.on('connection', function(clientI){
+  console.log('Un client est connecté !');
+  clientI.emit('message', 'Vous êtes bien connecté !');
 
-    // arrivée d'un message
-    socket.on('message', function (message) {
-    console.log(socket.pseudo + ' me parle ! Il me dit : ' + message);});
-    // arrivé d'un nouveau avec récupération de son pseudo
-   socket.on('new_user', function (pseudo) {
-       socket.pseudo = pseudo;
-       console.log(pseudo + ' Vient de donner son pseudo')
-       socket.broadcast.emit('message', pseudo + ' Vient de nous rejoindre !');
-     });
-      socket.on('accelerometre', function(message){
-       console.log(socket.pseudo + ' Vient de donner ses accelerometre : ' + message)
-       //renderServer.emit('accelerometer', message);
-       ioRender.emit('accelerometer', message);
-     });
-     socket.on('aX', function(message){
-      console.log(socket.pseudo + ' Vient de donner aX : ' + message)
-      //renderServer.emit('accelerometer', message);
-      ioRender.emit('aX', message);
+  clientI.on('message', function (message) {
+  console.log(clientI.pseudo + ' me parle ! Il me dit : ' + message);});
+
+  clientI.on('new_user', function (pseudo) {
+      clientI.pseudo = pseudo;
+      console.log(pseudo + ' Vient de donner son pseudo')
+      clientI.broadcast.emit('message', pseudo + ' Vient de nous rejoindre !');
     });
-    socket.on('aY', function(message){
-     console.log(socket.pseudo + ' Vient de donner aY : ' + message)
+  clientI.on('accelerometre', function(message){
+     console.log(clientI.pseudo + ' Vient de donner ses accelerometre : ' + message)
      //renderServer.emit('accelerometer', message);
-     ioRender.emit('aY', message);
+     socketR.emit('accelerometer', message);
    });
-   socket.on('aZ', function(message){
-    console.log(socket.pseudo + ' Vient de donner aZ : ' + message)
+
+   clientI.on('aX', function(message){
+    console.log(clientI.pseudo + ' Vient de donner aX : ' + message)
     //renderServer.emit('accelerometer', message);
-    ioRender.emit('aZ', message);   
+    //socketR.emit('aX', message);
+    renderClients.forEach(function(clientRenderer){
+      clientRenderer.emit('aX', message)
+    });
+    //renderServer.broadcast.emit('aX', message);
   });
-    //socket.on('accelerometre', acceleroProcessing(socket.pseudo));
+  clientI.on('aY', function(message){
+   console.log(clientI.pseudo + ' Vient de donner aY : ' + message)
+   //renderServer.emit('accelerometer', message);
+   //socketR.emit('aY', message);
+   renderClients.forEach(function(clientRenderer){
+     clientRenderer.emit('aY', message)
+   });
+ });
+ clientI.on('aZ', function(message){
+  console.log(clientI.pseudo + ' Vient de donner aZ : ' + message)
+  //renderServer.emit('accelerometer', message);
+  //socketR.emit('aZ', message);
+ renderClients.forEach(function(clientRenderer){
+   clientRenderer.emit('aZ', message)
+ });
+});
 });
 
 
 
-ioRender.sockets.on('connection', function (socket) {
-    console.log('Un Renderer est connecté !');
-    socket.emit('message', 'Vous êtes bien connecté !');
-     });
 
+
+socketR.on('connection', function (clientR) {
+    console.log('Un Renderer est connecté !');
+    clientR.emit('message', 'Vous êtes bien connecté !');
+    // To do : mémoriser les clients pour pouvoir faire du broadcast ensuite
+    renderClients.push(clientR);
+});
 
 
 

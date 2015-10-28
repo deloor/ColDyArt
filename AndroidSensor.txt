@@ -1,0 +1,6 @@
+-Geolocation -> V
+-Orientation -> V
+-Media Capture
+-Vibration -> V
+-Ambient Light
+-Touch Events

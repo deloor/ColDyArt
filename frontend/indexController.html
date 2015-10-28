@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Coldyart - Controller</title>
+</head>
+<body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/lib/jquery.js"></script>
+  <script src="/lib/gyro.js"></script>
+  <script src="/js/client.js"></script>
+  <script src="/js/Clients/controller.js"></script>
+
+  <script type="text/javascript">
+    controller = new Controller();
+  </script>
+  <div id="tableauxInformation">
+    <table border=1>
+      <tr>
+        <td><h4>Nombre de Packet / Seconde</h4></td>
+        <td id="nbPacketSeconde"></td>
+      </tr>
+
+      <tr>
+        <td><h4>Nombre de client Connecte</h4></td>
+        <td id="nbClient"></td>
+      </tr>
+    </table>
+  </div>
+  <div id="tableaux">
+
+  </div>
+  <canvas id="canvas" width="1000" height="1000">
+    <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
+  </canvas>
+</body>
+</html>

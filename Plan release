@@ -1,0 +1,32 @@
+Plan release
+
+Nombre d'itérations = 6
+Capacity = 5 heures * 3 personnes * 2 jours = 30 heures de travail effectif par sprint
+
+
+Organisation des livrables
+
+Sprint 0 : appropriation : JS, Node & Three.js (exemple minimal fourni)
+	Script Master : Michael 
+	Durée : 2 semaines
+
+Sprint 1 : création du serveur pour clients http et gestion avec récupération des pseudos des connectés et d’une structure de donnée permettant de représenter les accéléromètres de chacun
+	Script Master : Christophe
+	Durée : 2 semaines
+
+Sprint 2 : création d’un rendu minimal, indiquant les pseudo des connectés animés par leurs accéléromètres. Test de la tenue temps réel (100 connexions)
+	Script Master : Quentin
+	Durée : 2 semaines
+
+Sprint 3 : Création de la voile dans le client Rendu et animation dépendante des accéléromètres
+	Script Master : Michael 
+	Durée : 2 semaines
+
+Sprint 4 : Connexion avec OSC
+	Script Master : Christophe
+	Durée : 2 semaines
+
+Sprint 5 : Tests d’autres rendus de la librairies Three.js (exemples : particules).
+	Script Master : Quentin
+	Durée : 2 semaines
+

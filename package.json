@@ -1,0 +1,14 @@
+{
+    "name": "ColdyArt",
+    "version": "0.0.0",
+    "description": "Att",
+    "dependencies": {
+	"node": "latest",
+	"coffee-script": "latest",
+        "socket.io": "latest",
+        "express": "latest",
+	"three": "latest",
+	"jquery": "latest"
+    },
+    "author": "DERRIEN, GROLLEAU, NOUCHET"
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <meta charset="utf-8" />
+	   <link rel="stylesheet" type="text/css" href="candidate.css">
+	</head>
+	<body>
+	  <script src="client.js"></script>
+
+	  <div style="width:100%; height:100%;" id="testGeneralPannel">
+	      <div id="testStart" style="display:none">
+	          <div id="startTestButton">
+	              Commencer le test
+	          </div>
+	      </div>
+
+	      <div id="test" style="display:none">
+	        <div id="testInfo"> Bien/Faux</div>
+	        <div id="testLetterArea">
+	            <img class="testLetter" id="testLeftLettre" src="img/gazecuing_E.png" alt="face" id="testFace">
+	            <img class="testLetter" id="testRightLettre" src="img/gazecuing_C.png" alt="face" id="testFace">
+	        </div>
+	        <img src="img/gazecuing.png" alt="face" id="testFace">
+	        <div id="buttonArea">
+	            <div class="testButton" id="leftButton"><h1><</h1></div>
+	            <div class="testButton" id="rightButton"><h1>></h1></div>
+	        </div>
+	      </div>
+
+	      <div id="testResult" style="display:none">
+	          <div id="testResultRect">Félicitation, vous êtes séléctionné
+	              <br>Désolé, mais vous ne correspondez pas à nos attentes</div>
+	      </div>
+	  </div>
+
+	  <script src="pannel.js"></script>
+	  <script src="testPsycho.js"></script>
+	  <script src="testRunner.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <!-- <h1> DYNAMIC ART TEST </h1>
+  <h2> 28 </h2> -->
+   <link rel="stylesheet" type="text/css" href="css/candidate.css">
+</head>
+<body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/lib/jquery.js"></script>
+  <script src="/lib/gyro.js"></script>
+  <script src="/js/client.js"></script>
+
+    <div id="initialize">
+        <div id="center">
+            <img src="img/barr-amzer.png" alt="BARR-AMZER"/>
+            <p>
+                Pour un monde sans naufrage
+            </p>
+            <p>
+                Rejoignez les 1000 Marins Virtuels
+            </p>
+            <p id="candidateID">
+                Vous êtes le numéro : #
+            </p>
+        </div>
+        <div id="left">
+            <img src="img/brest.png" alt="Brest 2016" style="margin-left: auto; margin-right: auto; float: left; width:100%;"/>
+            <img src="img/derezo.jpg" alt="Derezo" style="margin-left: auto; margin-right: auto; display: block; width:100%;"/>
+        </div>
+        <div id="right">
+            <img src="img/enib.png" alt="ENIB" style="margin-left: auto; margin-right: auto; display: block; width:100%;"/>
+            <img src="img/cerv.gif" alt="CERV" style="margin-left: auto; margin-right: auto; display: block; width:100%;"/>
+        </div>
+    </div>
+
+  <div style="width:100%; height:100%;" id="testGeneralPannel">
+      <div id="testStart" style="display:none">
+          <div id="startTestButton">
+              Commencer le test
+          </div>
+      </div>
+      <div id="test" style="display:none">
+        <div id="testInfo"> Bien/Faux</div>
+        <div id="testLetterArea">
+            <img class="testLetter" id="testLeftLettre" src="img/gazecuing_E.png" alt="face" id="testFace">
+            <img class="testLetter" id="testRightLettre" src="img/gazecuing_C.png" alt="face" id="testFace">
+        </div>
+        <img src="img/gazecuing.png" alt="face" id="testFace">
+
+
+        <div id="buttonArea">
+            <div class="testButton" id="leftButton"><h1><</h1></div>
+            <div class="testButton" id="rightButton"><h1>></h1></div>
+        </div>
+      </div>
+
+      <div id="testCalcule" style="display:none">
+          <img src="img/load.gif" alt="Chargement" style="margin-left: auto; margin-right: auto; display: block;"/>
+
+      </div>
+
+      <div id="testResult" style="display:none">
+          <div id="testResultRect">Félicitation, vous êtes séléctionné
+              <br>Désolé, mais vous ne correspondez pas à nos attentes</div>
+      </div>
+  </div>
+
+  <div id="scanner" style="width:100%; height:100%; display:none">
+      <div id="txt" style="font-size: 2em;">Scanner votre doigt</div>
+      <div id="touchsurface" />
+          <div id="div2" />
+          <div id="example_block"/>
+  </div>
+
+  <script src="/js/Clients/Candidates/pannel.js"></script>
+  <script src="/js/Clients/Candidates/scanner.js"></script>
+  <script src="/js/Clients/Candidates/testPsycho.js"></script>
+  <script src="/js/Clients/Candidates/candidate.js"></script>
+
+
+
+</body>
+</html>

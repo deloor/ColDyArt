@@ -1,0 +1,13 @@
+ColDyArt
+
+TODO : 
+Remove broadcast on client connexion
+Scene with client pseudo
+Autodetection of serveur IP
+Create various scene
+Create different role for client
+Create a client database to manage pseudo and role
+Create a class diagram
+Setup a single serveur infrastructur
+Manage client disconnection
+Connect client i/o and three.js animation

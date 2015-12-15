@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <h1> DYNAMIC ART TEST </h1>
+  <h2> 28 </h2>
+</head>
+<body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/lib/jquery.js"></script>
+  <script src="/lib/gyro.js"></script>
+  <script src="/js/sensor.js"></script>
+  <p><input type="button" value="Simule accelerometer and gyro" onClick="simuSensors()"/></p>
+  <div id="tempValue">
+    Temporal values :
+  </div>
+  <p><input type="button" value="The location" onClick="lolo()"/></p>
+  <p><input type="button" value="The vibration" onClick="vibration()"/></p>
+  <!-- <img src="/img/FINGERPRINT.jpg" alt="fingerprint" width="30%" height="30%" position=absolute /> -->
+
+  <canvas id="canvas" width="1000" height="1000">
+    <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
+  </canvas>
+</body>
+</html>
